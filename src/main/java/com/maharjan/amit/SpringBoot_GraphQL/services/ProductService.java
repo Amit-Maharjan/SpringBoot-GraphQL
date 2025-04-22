@@ -20,4 +20,20 @@ public class ProductService {
     public List<Product> getProductsByCategory(String category) {
         return productRepository.findByCategory(category);
     }
+
+    // SALES TEAM: Update the stock of a product
+    public Product updateStock(int id, int stock) {
+        Product existingProduct = productRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Product not found with id: " + id));
+        existingProduct.setStock(stock);
+        return productRepository.save(existingProduct);
+    }
+
+    // WAREHOUSE TEAM: Receive new shipment
+    public Product receiveNewShipment(int id, int quantity) {
+        Product existingProduct = productRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Product not found with id: " + id));
+        existingProduct.setStock(existingProduct.getStock() + quantity);
+        return productRepository.save(existingProduct);
+    }
 }
